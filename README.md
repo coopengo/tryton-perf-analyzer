@@ -4,7 +4,10 @@ This is a Lua script that could be executed in Redis to query performance
 analyzer data.
 
 The perf analyzer is not (for now) a part of Tryton. To install it, you can
-apply this patch [patch](https://github.com/coopengo)
+grab the code from:
+
+- maintained [branch](https://github.com/coopengo/trytond/tree/perf-analyzer)
+- main [commit](https://github.com/coopengo/trytond/commit/ce6d272f22197d690eb3e66ed3941c72e2429b56)
 
 tryton-perf-analyzer is useful to analyze and understand unjustified slowness on
 Trytond application. This could be done this way:
