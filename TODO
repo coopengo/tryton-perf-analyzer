@@ -1,2 +1,3 @@
 - query: support new cases: table method:table
-- query response size
+- query: response size
+- profile | io | db: use globs syntax (ie: model.res.user.*)
