@@ -48,6 +48,14 @@ Tryton performance issues.
     `pip install redis hiredis msgpack-python`
 
 - Apply the patch to your server (trytond)
+
+    ```sh
+    cd <trytond-folder>
+    wget -O patch https://github.com/coopengo/trytond/compare/3.8...perf-analyzer.diff
+    hg import --no-commit patch  # for hg repo
+    git apply patch              # for git repo
+    ```
+
 - Configure (trytond.conf)
 
     ```
