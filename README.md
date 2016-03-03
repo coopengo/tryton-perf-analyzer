@@ -1,13 +1,14 @@
 # Tryton Performance Analyzer
 
-This script is a part of a toolchain that aims to help analyze potential
+This script is a part of a tool-chain that aims to help analyze potential
 Tryton performance issues.
 
 ## Context
 
 - Tryton is an excellent ERP platform that makes it easy to develop specific
   business processes. It also brings up to one hundred modules ready to use
-  (party management, accounting, etc). More information can be found on the [Tryton Foundation Site](http://www.tryton.org/)
+  (party management, accounting, etc.). More information can be found on the
+  [Tryton Foundation Site](http://www.tryton.org/)
 - Sometimes, when writing business modules, we may come across unexpected
   performance issues that are usually difficult to understand.
 - Since Tryton is a client / server application, it can prove difficult to
@@ -20,26 +21,32 @@ Tryton performance issues.
 
 ## How does it work?
 
-### The tools chain components
+### Main components
 
-- A patched trytond (tryton server) whichs hooks server calls and logs data to
+- A patched trytond (tryton server) which hooks server calls and logs data to
   be later analyzed
     - Hoping that this is a transitional state until this work is accepted by
       Tryton Foundation.
-    - The commit to retrieve is [here](https://github.com/coopengo/trytond/commit/ce6d272f22197d690eb3e66ed3941c72e2429b56)
+    - The commit to retrieve is
+      [here](https://github.com/coopengo/trytond/commit/ce6d272f22197d690eb3e66ed3941c72e2429b56)
     - A dedicated git branch is created to maintain this piece of code. It is
-      safer to get the diff from 3.8 branch [here](https://github.com/coopengo/trytond/compare/3.8...perf-analyzer)
+      safer to get the diff from 3.8 branch
+      [here](https://github.com/coopengo/trytond/compare/3.8...perf-analyzer)
 
 - Redis server to store analysis data.
 
 - This Lua script to read data from Redis
     - Usage: `redis-cli --raw -h <host> -p <port> -n <db> --eval <script> , <arguments>`
-    - to prettify: `| column -t`
-    - to paginate: `| less`
+    - Prettify: `| column -t`
+    - Paginate: `| less`
 
 ### Steps for usage
 
 - Install [Redis](http://redis.io/)
+- Install Python dependencies
+
+    `pip install redis hiredis msgpack-python`
+
 - Apply the patch to your server (trytond)
 - Configure (trytond.conf)
 
