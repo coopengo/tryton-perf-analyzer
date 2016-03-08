@@ -261,7 +261,7 @@ api.db = generate_extra_api('db')
 local query_template = [[
 context: %s - %s
 
-db context: %s - %s
+db context: %s - %s (%.3f sec)
 
 sql:
 %s
@@ -283,7 +283,7 @@ api.query = function(session, rank)
         local query = redis.call('LINDEX', key, rank-1)
         query = cmsgpack.unpack(query)
         return query_template:format(query.method, query.call, query.action,
-            query.table, query.sql, query.bt)
+            query.table, query.tm, query.sql, query.bt)
     else
         local queries = redis.call('LRANGE', key, 0, -1)
         local result = {'#\tmethod\tcall\taction\ttable'}
