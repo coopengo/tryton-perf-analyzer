@@ -73,8 +73,8 @@ local function generate_stats_api(name)
         local elements = redis.call('ZREVRANGE', pri_key, 0, -1)
         local list = {}
         for _, element in ipairs(elements) do
-            local pri_score = redis.call('ZSCORE', pri_key, element)
-            local sec_score = redis.call('ZSCORE', sec_key, element)
+            local pri_score = assert(tonumber(redis.call('ZSCORE', pri_key, element)))
+            local sec_score = assert(tonumber(redis.call('ZSCORE', sec_key, element)))
             local item
             if order == 't' then
                 item = {element, pri_score, sec_score, pri_score / sec_score}
