@@ -19,7 +19,6 @@ Server calls:
   - call    : list server calls in chrono. order - <session> [method]
 
 Extra data per call:
-  - io      : print io (req, res) for a call - <session> [call]
   - profile : print profiling result for a call - <session> [call]
   - db      : print db accesses for a call - <session> [call]
 
@@ -97,20 +96,6 @@ local function generate_stats_api(name)
 end
 
 local extra_getter = {}
-
-local io_template = [[
-request:
-%s
-
-response:
-%s
-]]
-
-extra_getter.io = function(key)
-    local req = redis.call('HGET', key, 'req')
-    local res = redis.call('HGET', key, 'res')
-    return io_template:format(req, res)
-end
 
 extra_getter.p = function(key)
     return redis.call('GET', key)
@@ -213,8 +198,7 @@ api.call = function(session, method)
         return result
     end
 
-    local header = {'#', 'method', 'dt', 'tm', 'db_nb', 'db_tm', 'req_size',
-        'res_size'}
+    local header = {'#', 'method', 'dt', 'tm', 'db_nb', 'db_tm'}
     local template = '%d\t%s\t%s\t%.3f\t%d\t%.3f\t%d\t%d'
     local result = {table.concat(header, '\t')}
 
@@ -251,8 +235,6 @@ api.call = function(session, method)
     until exists == 0
     return result
 end
-
-api.io = generate_extra_api('io')
 
 api.profile = generate_extra_api('p')
 

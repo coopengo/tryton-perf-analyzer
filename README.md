@@ -62,7 +62,6 @@ Tryton performance issues.
     [perf]
     broker = redis://127.0.0.1:6379/15  # redis url and db
     users = admin                       # users that analyze
-    io = model.ir.ui.menu.read          # log io for these methods
     profile = model.res.user.read       # profile methods
     db = model.res.user.search          # log all db accesses for theses methods
     query = 0.2                         # deeply analyse queries > 0.2 seconds
