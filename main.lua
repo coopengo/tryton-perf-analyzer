@@ -168,11 +168,13 @@ api.session = function(user)
     end
 
     local function insert(key)
-        local line = {key:match('s:(%x+)')}
+        local line = {key:match('s:(%x+)'), '-', '-', '-', 0, 0}
         for i = 2, #header do
             local k = header[i]
             local v = redis.call('HGET', key, k)
-            line[#line+1] = v
+            if v then
+                line[i] = v
+            end
         end
         result[#result+1] = template:format(unpack(line))
     end
@@ -200,7 +202,6 @@ api.call = function(session, method)
 
     local header = {'#', 'method', 'dt', 'tm', 'db_nb', 'db_tm'}
     local template = '%d\t%s\t%s\t%.3f\t%d\t%.3f'
-    local terror = '%d\t%s\t%s\t-\t-\t-'
     local result = {table.concat(header, '\t')}
 
     local function is_eligible(key)
@@ -213,21 +214,15 @@ api.call = function(session, method)
     end
 
     local function insert(key, call)
-        local line = {call}
+        local line = {call, '-', '-', 0, 0, 0}
         for i = 2, #header do
             local k = header[i]
             local v = redis.call('HGET', key, k)
             if v then
-                line[#line+1] = v
-            else
-                break
+                line[i] = v
             end
         end
-        if #line == 6 then
-            result[#result+1] = template:format(unpack(line))
-        else
-            result[#result+1] = terror:format(line[1], line[2], line[3])
-        end
+        result[#result+1] = template:format(unpack(line))
     end
 
     local exists
